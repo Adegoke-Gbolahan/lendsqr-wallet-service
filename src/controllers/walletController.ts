@@ -40,7 +40,7 @@ export const withdrawWallet = async (req: Request<{}, {}, FundWalletRequestBody>
       description: `User withdrew ${amount} units`,
       amount,
     });
-    res.status(200).json({ message: 'Withdrawal is successful' });
+    res.status(200).json({ message: 'Withdrawal is successful', balance: parseFloat(wallet.balance) - amount });
     return
   } catch (error) {
     console.error(error); 
@@ -78,7 +78,7 @@ export const transferFunds = async (
 
 
     // Add to recipient's wallet
-    await generalUpdateWallet(recipientId, parseFloat(recipientWallet.balance) - amount);
+    await generalUpdateWallet(recipientId, parseFloat(recipientWallet.balance) +  amount);
     await logUserActivity({
       user_id: senderId,
       activity_type: 'transfer',
@@ -91,7 +91,7 @@ export const transferFunds = async (
       description: `User received ${amount} units from user ${senderId}`,
       amount,
     });
-    return res.status(200).json({ message: 'Transfer successful.' });
+    return res.status(200).json({ message: 'Transfer successful.',  balance:parseFloat(senderWallet.balance) - amount});
   } catch (error) {
     console.error('Error during fund transfer:', error);
     return res.status(500).json({ message: 'Error transferring funds.' });
