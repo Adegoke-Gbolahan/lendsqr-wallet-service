@@ -3,3 +3,8 @@ export interface FundWalletRequestBody {
     amount: number;
 }
   
+export interface TransferFundsRequestBody {
+    senderId: number;
+    recipientId: number;
+    amount: number;
+}

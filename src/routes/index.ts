@@ -1,11 +1,14 @@
 import express, { RequestHandler } from 'express';
-import { registerUser } from '../controllers/userController';
-import { fundWallet } from '../controllers/walletController';
+import { registerUser, loginUser } from '../controllers/userController';
+import { fundWallet,withdrawWallet, transferFunds } from '../controllers/walletController';
+import {authenticateToken} from "../helpers/authMiddleware"
 
 const router = express.Router();
-
-// Cast the handlers to RequestHandler to avoid type mismatch
-router.post('/register', registerUser as RequestHandler);
-router.post('/fund', fundWallet as RequestHandler);
+ 
+router.post('/login', loginUser as RequestHandler);
+router.post('/register-user', registerUser as RequestHandler);
+router.post('/fund-wallet', authenticateToken, fundWallet as RequestHandler);
+router.post('/wallet-withdrawal', authenticateToken, withdrawWallet as RequestHandler);
+router.post('/transfer-fund', authenticateToken, transferFunds as RequestHandler);
 
 export default router;

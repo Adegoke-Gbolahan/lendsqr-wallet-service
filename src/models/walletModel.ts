@@ -11,3 +11,7 @@ export const getWalletByUserId = async (userId: number) => {
 export const updateWalletBalance = async (userId: number, amount: number) => {
   return db('wallets').where({ user_id: userId }).increment('balance', amount);
 };
+export const generalUpdateWallet = async (userId: number, amount: number) => {
+  return db('wallets').where({ user_id: userId }).update({ balance: amount });
+};
+
